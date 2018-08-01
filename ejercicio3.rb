@@ -15,4 +15,36 @@
 # Crear un método que lea el archivo rouletter_history.txt y retorne el valor
 # que más ha generado la ruleta históricamente.
 
-r = (1..10).to_a
+class Roulette
+  def initialize
+    @r = (1..10).to_a
+  end
+
+  def get_rand
+    rand(0..(@r.size - 1))
+  end
+
+  def play(number)
+    number == @r[get_rand]
+  end
+
+  def play_game
+    random = get_rand
+    File.open('roulette_history.txt', 'a') { |file| file.puts(get_rand) }
+    if play(get_rand)
+      File.open('winner.txt', 'a') { |file| file.puts get_rand }
+    end
+  end
+
+  def most_played
+    file = File.open('roulette_history.txt', 'r')
+    numbers = file.readlines.map(&:to_i)
+    coinc = {}
+    numbers.group_by { |i| i }.each { |k, v| coinc[k] = v.size }
+    puts "El más repetido es: #{coinc.max_by { |_, v| v }[0]}"
+  end
+end
+
+roulette = Roulette.new
+roulette.play_game
+print roulette.most_played
