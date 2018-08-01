@@ -12,3 +12,29 @@
 # Crear métodos que permitan:
 # Conocer el mayor valor recaudado, por mesa, y el nombre de la mesa y
 # día corresponde (día 1, día 2, día 3 o día 4).
+
+class Table
+  attr_reader :name
+  def initialize(name, *collections)
+    @name = name
+    @collections = { 'día 1' => collections[0].to_i,
+                     'día 2' => collections[1].to_i,
+                     'día 3' => collections[2].to_i,
+                     'día 4' => collections[3].to_i }
+  end
+
+  def max_day
+    @collections.max_by { |_, v| v }
+  end
+end
+
+def generate_tables
+  tables = []
+  File.open('casino.txt', 'r') do |file|
+    file.readlines.each { |line| tables << Table.new(*line.split(', ')) }
+  end
+  tables
+end
+
+tables = generate_tables
+tables.each { |e| print "#{e.name}: (#{e.max_day[0]}) #{e.max_day[1]}\n" }
