@@ -39,7 +39,6 @@ class CourseList
   end
 
   def beforeStartDate(date = Date.today)
-    date = date.is_a?(String) ? Date.parse(date) : date
     unless es_2018_01_01?(date)
       @list.select { |e| date >= e.start_date }
            .each { |e| puts "#{e.name}: #{e.start_date}" }
@@ -47,7 +46,6 @@ class CourseList
   end
 
   def afterEndDate(date = Date.today)
-    date = date.is_a?(String) ? Date.parse(date) : date
     unless es_2018_01_01?(date)
       @list.select { |e| date <= e.end_date }
            .each { |e| puts "#{e.name}: #{e.end_date}" }
@@ -70,6 +68,6 @@ file = File.open('cursos.txt', 'r')
 file.readlines.each { |line| courses.add(Course.new(*line.split(', '))) }
 file.close
 
-courses.beforeStartDate('2017-07-09')
+courses.beforeStartDate(Date.new(2017, 7, 9))
 puts '---'
-courses.afterEndDate('2017-07-09')
+courses.afterEndDate(Date.new(2017, 7, 9))
