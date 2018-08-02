@@ -17,10 +17,8 @@ class Table
   attr_reader :name
   def initialize(name, *collections)
     @name = name
-    @collections = { 'día 1' => collections[0].to_i,
-                     'día 2' => collections[1].to_i,
-                     'día 3' => collections[2].to_i,
-                     'día 4' => collections[3].to_i }
+    @collections = collections.each_with_index
+                              .map { |e, i| ["día #{(i + 1)}", e] }.to_h
   end
 
   def max_day
