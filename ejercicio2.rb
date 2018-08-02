@@ -29,7 +29,7 @@ class CourseList
     @list.push(course)
   end
 
-  def es_2018_01_01?(date)
+  def es_2018?(date)
     if date >= Date.new(2018, 1, 1)
       puts 'ERROR: Fecha entregada es igual/mayor a 2018-01-01'
       true
@@ -39,19 +39,14 @@ class CourseList
   end
 
   def beforeStartDate(date = Date.today)
-    unless es_2018_01_01?(date)
-      @list.select { |e| date >= e.start_date }
-           .each { |e| puts "#{e.name}: #{e.start_date}" }
-    end
+    @list.select { |e| date >= e.start_date }
+         .each { |e| puts "#{e.name}: #{e.start_date}" } unless es_2018?(date)
   end
 
   def afterEndDate(date = Date.today)
-    unless es_2018_01_01?(date)
-      @list.select { |e| date <= e.end_date }
-           .each { |e| puts "#{e.name}: #{e.end_date}" }
-    end
+    @list.select { |e| date <= e.end_date }
+         .each { |e| puts "#{e.name}: #{e.end_date}" } unless es_2018?(date)
   end
-
 end
 
 class Course
