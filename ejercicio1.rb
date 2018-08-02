@@ -13,6 +13,9 @@
 # Conocer el mayor valor recaudado, por mesa, y el nombre de la mesa y
 # día corresponde (día 1, día 2, día 3 o día 4).
 
+# Calcular el promedio total de lo recaudado por todas las mesas en todos
+# los días.
+
 class Table
   attr_reader :name
   def initialize(name, *collections)
@@ -25,6 +28,10 @@ class Table
   def max_day
     @collections.max_by { |_, v| v }
   end
+
+  def avg_day
+    @collections.values.sum / @collections.size.to_f
+  end
 end
 
 def generate_tables
@@ -35,5 +42,17 @@ def generate_tables
   tables
 end
 
+def get_max(tbl)
+  tbl.each { |e| print "#{e.name}: (#{e.max_day[0]}) #{e.max_day[1]}\n" }
+end
+
+def get_avg(tbl)
+  avg = tbl.map(&:avg_day)
+  avg = avg.sum / avg.size
+  puts "Promedio total: #{avg}"
+end
+
 tables = generate_tables
-tables.each { |e| print "#{e.name}: (#{e.max_day[0]}) #{e.max_day[1]}\n" }
+get_max(tables)
+puts '---'
+get_avg(tables)
