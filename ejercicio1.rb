@@ -18,7 +18,8 @@ class Table
   def initialize(name, *collections)
     @name = name
     @collections = collections.each_with_index
-                              .map { |e, i| ["día #{(i + 1)}", e] }.to_h
+                              .map { |e, i| ["día #{(i + 1)}", e.to_i] }
+                              .to_h
   end
 
   def max_day
