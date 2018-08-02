@@ -19,36 +19,6 @@
 
 require 'date'
 
-class CourseList
-  attr_reader :list
-  def initialize
-    @list = []
-  end
-
-  def add(course)
-    @list.push(course)
-  end
-
-  def es_2018?(date)
-    if date >= Date.new(2018, 1, 1)
-      puts 'ERROR: Fecha entregada es igual/mayor a 2018-01-01'
-      true
-    else
-      false
-    end
-  end
-
-  def beforeStartDate(date = Date.today)
-    @list.select { |e| date >= e.start_date }
-         .each { |e| puts "#{e.name}: #{e.start_date}" } unless es_2018?(date)
-  end
-
-  def afterEndDate(date = Date.today)
-    @list.select { |e| date <= e.end_date }
-         .each { |e| puts "#{e.name}: #{e.end_date}" } unless es_2018?(date)
-  end
-end
-
 class Course
   attr_reader :name, :start_date, :end_date
   def initialize(name, start_date, end_date)
@@ -58,11 +28,30 @@ class Course
   end
 end
 
-courses = CourseList.new
+def is_2018?(date)
+  if date >= Date.new(2018, 1, 1)
+    puts 'ERROR: Fecha entregada es igual/mayor a 2018-01-01'
+    true
+  else
+    false
+  end
+end
+
+def beforeStartDate(list, date = Date.today)
+  list.select { |e| date >= e.start_date }
+      .each { |e| puts "#{e.name}: #{e.start_date}" } unless is_2018?(date)
+end
+
+def afterEndDate(list, date = Date.today)
+  list.select { |e| date <= e.end_date }
+      .each { |e| puts "#{e.name}: #{e.end_date}" } unless is_2018?(date)
+end
+
+courses = []
 file = File.open('cursos.txt', 'r')
-file.readlines.each { |line| courses.add(Course.new(*line.split(', '))) }
+file.readlines.each { |line| courses << Course.new(*line.split(', ')) }
 file.close
 
-courses.beforeStartDate(Date.new(2017, 7, 9))
+beforeStartDate(courses, Date.new(2017, 7, 9))
 puts '---'
-courses.afterEndDate(Date.new(2017, 7, 9))
+afterEndDate(courses, Date.new(2017, 7, 9))
